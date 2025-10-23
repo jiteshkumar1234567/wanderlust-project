@@ -28,23 +28,28 @@ const userRouter = require("./routes/user");
 //  Database Connection
 const dbUrl = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
 
-async function startServer() {
+const startServer = async () => {
   try {
-    await mongoose.connect(dbUrl, {
+    await mongoose.connect(process.env.MONGO_URL, {
       serverSelectionTimeoutMS: 30000,
       socketTimeoutMS: 45000,
     });
-    console.log("✅ MongoDB connected successfully!");
+    console.log("✅ MongoDB connected!");
 
-    app.listen(process.env.PORT || 8080, () => {
-      console.log("Server is listening to port", process.env.PORT || 8080);
+    // Start server AFTER DB is connected
+    const PORT = process.env.PORT || 8080;
+    app.listen(PORT, () => {
+      console.log(`✅ Server running on port ${PORT}`);
     });
+
   } catch (err) {
     console.error("❌ MongoDB connection failed. Retrying in 5s...", err.message);
     setTimeout(startServer, 5000);
   }
-}
+};
+
 startServer();
+
 
 
 //  App Configuration

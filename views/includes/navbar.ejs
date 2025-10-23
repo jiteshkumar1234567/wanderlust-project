@@ -25,12 +25,14 @@
 
    <a class="nav-link" href="/listings/new">Airbnb your home</a>
 
-<% if (!currentUser) { %>
-  <a class="btn me-2 auth-btn signup-btn" href="/signup"><b>Sign Up</b></a>
-  <a class="btn auth-btn login-btn" href="/login"><b>Log In</b></a>
+
+<% if (typeof currentUser !== 'undefined' && currentUser) { %>
+  <span>Welcome, <%= currentUser.username %></span>
+    <a class="btn auth-btn logout-btn" href="/logout"><b>Logout</b></a>
 <% } else { %>
-  <a class="btn auth-btn logout-btn" href="/logout"><b>Logout</b></a>
-<% }  %>
+ <a class="btn me-2 auth-btn signup-btn" href="/signup"><b>Sign Up</b></a>
+ <a class="btn auth-btn login-btn" href="/login"><b>Log In</b></a>
+<% } %>
 
 
 </div>
