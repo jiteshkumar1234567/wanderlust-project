@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/listings"><i class="fa-solid fa-compass"></i></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/listings">Explore</a>
+      </div>
+ 
+
+  <!-- 🌍 Country Search Bar -->
+   <div class="navbar-nav ms-auto">
+ <form action="/listings/search" method="GET" class="d-flex align-items-center">
+  <input type="text" name="country" class="form-control me-2" style="border-radius: 50px; border: 2px solid black;" placeholder="Search by country..." value="<%= country || '' %>">
+    <button class="btn btn-outline-dark me-2" style="background-color:  #fe424d; color: white; border-radius: 50px;"><i>Search</i></button>
+    <a href="/listings" class="btn btn-outline-secondary" style="border-radius: 50px;"><i>Reset</i></a>
+  </form>
+</div> 
+
+
+
+<div class="navbar-nav ms-auto me-3 auth-buttons">
+
+   <a class="nav-link" href="/listings/new">Airbnb your home</a>
+
+<% if (!currentUser) { %>
+  <a class="btn me-2 auth-btn signup-btn" href="/signup"><b>Sign Up</b></a>
+  <a class="btn auth-btn login-btn" href="/login"><b>Log In</b></a>
+<% } else { %>
+  <a class="btn auth-btn logout-btn" href="/logout"><b>Logout</b></a>
+<% } %>
+
+
+</div>
+    </div>
+  </div>
+</nav>
+

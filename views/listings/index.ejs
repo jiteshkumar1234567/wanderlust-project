@@ -1,0 +1,124 @@
+<% layout("/layouts/boilerplate") %>
+<br>
+  <!-- <h3>All Listings</h3> -->
+
+ <div id="filters">
+  <div class="filter">
+     <a href="/listings/category/Trending" style="color: black; text-decoration: none;">
+    <div><i class="fa-solid fa-fire"></i></div>
+    <p>Trending</p>
+  </a>
+  </div>
+  <div class="filter">
+     <a href="/listings/category/Rooms" style="color: black; text-decoration: none;">
+    <div><i class="fa-solid fa-bed"></i></div>
+    <p>Rooms</p>
+  </a>
+  </div>
+  <div class="filter">
+      <a href="/listings/category/Cities" style="color: black; text-decoration: none;">
+    <div><i class="fa-solid fa-building-user"></i></div>
+    <p>Cities</p>  
+  </a>
+  </div>
+  <div class="filter">
+  <a href="/listings/category/Mountain" style="color: black; text-decoration: none;">
+  <div><i class="fa-solid fa-mountain-city"></i></div>
+    <p>Mountain</p>
+  </a>
+  </div>
+  <div class="filter">
+      <a href="/listings/category/Castles" style="color: black; text-decoration: none;">
+    <div><i class="fa-brands fa-fort-awesome"></i></div>
+    <p>Castles</p>
+  </a>
+  </div>
+  <div class="filter">
+     <a href="/listings/category/Pools" style="color: black; text-decoration: none;">
+    <div><i class="fa-solid fa-person-swimming"></i></div>
+    <p>Pools</p>
+  </a>
+  </div>
+  <div class="filter">
+     <a href="/listings/category/Lakes" style="color: black; text-decoration: none;">
+    <div><i class="fa-solid fa-water"></i></div>
+    <p>Lakes</p>
+  </a>
+  </div>
+  <div class="filter">
+     <a href="/listings/category/Beach" style="color: black; text-decoration: none;">
+    <div><i class="fa-solid fa-umbrella-beach"></i></div>
+    <p>Beach</p>
+  </a>
+  </div>
+  <div class="filter">
+     <a href="/listings/category/Camping" style="color: black; text-decoration: none;">
+    <div><i class="fa-solid fa-campground"></i></div>
+    <p>Camping</p>
+  </a>
+  </div>
+  <div class="filter">
+     <a href="/listings/category/Domes" style="color: black; text-decoration: none;">
+    <div><i class="fa-solid fa-igloo"></i></div>
+    <p>Domes</p>
+  </a>
+  </div>
+  <div class="filter">
+     <a href="/listings/category/Arictic" style="color: black; text-decoration: none;"> 
+    <div><i class="fa-solid fa-snowflake"></i></div>
+    <p>Arictic</p>
+  </a>
+  </div>
+  <div class="filter">
+     <a href="/listings/category/Boats" style="color: black; text-decoration: none;">
+    <div><i class="fa-solid fa-ship"></i></div>
+    <p>Boats</p>
+  </a>
+  </div>
+
+  <div class="tax-toggle">
+  <div class="form-check-reverse form-switch">
+  <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+  <label class="form-check-label" for="switchCheckDefault">Display Total After Taxes</label>
+</div>
+</div>
+</div> 
+
+
+  <div class="row row-cols-1 row-cols-md-3 g-4 mt-1">
+    <% for (let listing of allListings) { %>
+      <div class="col">
+        <div class="card h-100">
+          <a href="/listings/<%= listing._id %>">
+            <img src="<%= listing.image.url %>" class="card-img-top" alt="<%= listing.title %>" style="height: 20rem; object-fit: cover;">
+            <div class="card-img-overlay"></div>
+          </a>
+          <div class="card-body">
+            <h5 class="card-title"><%= listing.title %></h5>
+            <p class="card-text"><%= listing.description %></p>
+            <p><strong>Price:</strong> &#8377;<%= listing.price.toLocaleString("en-IN")  %>/night
+            <i class="tax-info"> &nbsp; &nbsp; +18% GST</i></p>
+            <!-- <p><%= listing.location %>, <%= listing.country %></p> -->
+            <a href="/listings/<%= listing._id %>" class="btn btn-primary">View Details</a>
+          </div> 
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+
+
+<script>
+  let taxswitch = document.getElementById("switchCheckDefault");
+  taxswitch.addEventListener("click",() =>{
+let taxinfo = document.getElementsByClassName("tax-info");
+for(info of taxinfo){
+  if(info.style.display != "inline"){
+    info.style.display = "inline";
+  } 
+  else{
+    info.style.display = "none";
+  }
+}
+  });
+</script>
