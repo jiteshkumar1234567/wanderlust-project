@@ -27,7 +27,20 @@
 
 
 <% if (typeof currentUser !== 'undefined' && currentUser) { %>
-  <span>Welcome, <%= currentUser.username %></span>
+<p class="user mt-3">
+ <b>Hello <%= currentUser ? currentUser.username : "Guest" %>!</b> 
+</p>
+
+<style>
+  .user {
+    opacity: 0.7;
+    text-decoration: none;
+  }
+  .user:hover {
+    opacity: 0.9;
+    text-decoration: underline;
+  }
+</style>
     <a class="btn auth-btn logout-btn" href="/logout"><b>Logout</b></a>
 <% } else { %>
  <a class="btn me-2 auth-btn signup-btn" href="/signup"><b>Sign Up</b></a>

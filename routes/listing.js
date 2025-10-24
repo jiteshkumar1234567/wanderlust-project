@@ -13,14 +13,20 @@ const Listing = require("../public/models/listing.js"); //  make sure this line 
 
 router
   .route("/")
-  .get(
-    wrapAsync(async (req, res) => {
-      const allListings = await Listing.find({});
-      //  Pass `country: null` so index.ejs always has this variable
-      res.render("listings/index", { allListings, listings: allListings, country: null });
-    })
-  )
-  .post(
+.get(async (req, res, next) => {
+  try {
+    const allListings = await Listing.find({});
+    res.render("listings/index", { 
+      allListings, 
+      listings: allListings, 
+      country: null,
+      currentUser: req.user || null
+    });
+  } catch (err) {
+    next(err); // Express error handler ko bhej de
+  }
+})
+.post(
   isLoggedIn,
   upload.single("listing[image]"),
   (req, res, next) => {
@@ -128,4 +134,5 @@ router
 
 
 module.exports = router;
+
 
