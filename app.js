@@ -109,6 +109,15 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("error.ejs", { err });
 });
 
+
+// Catch all errors
+app.use((err, req, res, next) => {
+    const status = err.status || 500;
+    const message = err.message || 'Something went wrong';
+    res.status(status).render('error', { message, status });
+});
+
+
 // -------------------- Start Server --------------------
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

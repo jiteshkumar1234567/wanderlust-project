@@ -13,7 +13,10 @@
   <!-- 🌍 Country Search Bar -->
    <div class="navbar-nav ms-auto">
  <form action="/listings/search" method="GET" class="d-flex align-items-center">
-  <input type="text" name="country" class="form-control me-2" style="border-radius: 50px; border: 2px solid black;" placeholder="Search by country..." value="<%= country || '' %>">
+  <input type="text" name="country" class="form-control me-2"
+       style="border-radius: 50px; border: 2px solid black;"
+       placeholder="Search by country..."
+       value="<%= typeof country !== 'undefined' ? country : '' %>">
     <button class="btn btn-outline-dark me-2" style="background-color:  #fe424d; color: white; border-radius: 50px;"><i>Search</i></button>
     <a href="/listings" class="btn btn-outline-secondary" style="border-radius: 50px;"><i>Reset</i></a>
   </form>
