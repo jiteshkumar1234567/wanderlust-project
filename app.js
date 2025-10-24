@@ -26,17 +26,25 @@ const userRouter = require("./routes/user.js");
 // -------------------- MongoDB Connection --------------------
 const dbUrl = process.env.MONGO_URL; 
 // fallback for local testing
-
-async function main() {
+// Function to connect to MongoDB
+async function connectWithRetry() {
   try {
-    await mongoose.connect(dbUrl);
+    await mongoose.connect(dbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log("✅ MongoDB Connected Successfully!");
   } catch (err) {
-    console.error("❌ MongoDB Connection Error:", err);
+    console.error("❌ MongoDB Connection Error:", err.message);
+
+    // Retry after 10 sec... (10000 ms)
+    console.log("⏳ Retrying MongoDB connection in 10 sec...");
+    setTimeout(connectWithRetry, 10000);
   }
 }
+// Initial connection attempt
+connectWithRetry();
 
-main();
 
 // -------------------- App Configurations --------------------
 app.engine("ejs", ejsMate);
@@ -61,7 +69,7 @@ store.on("error", (err) => {
 
 const sessionOptions = {
   store,
-  secret,
+  secret:process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -90,9 +98,9 @@ app.use((req, res, next) => {
 });
 
 // -------------------- Routes --------------------
-app.get("/", (req, res) => {
-  res.redirect("/listings");
-});
+// app.get("/", (req, res) => {
+//   res.redirect("/listings");
+// });
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);

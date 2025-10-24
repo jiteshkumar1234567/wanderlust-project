@@ -1,13 +1,17 @@
 <% layout("/layouts/boilerplate") %>
 
-<div class="row">
-  <div class="alert alert-danger col-8 mt-4 offset-2" role="alert">
-      
-  <div>
-<h4 class="alert-heading"><%= typeof message !== 'undefined' ? message : 'An error occurred' %></h4>
-<p>Status: <%= status %></p>
+<div class="row justify-content-center mt-5">
+  <div class="col-md-8">
+    <div class="alert alert-danger alert-dismissible fade show shadow" role="alert">
+      <div>
+        <h4 class="alert-heading">
+          <%= typeof message !== 'undefined' && message ? message : 'An unexpected error occurred.' %>
+        </h4>
+        <p>Status Code: <%= typeof status !== 'undefined' ? status : 500 %></p>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
 
-</div>  
-</div>
-</div>
 
