@@ -4,52 +4,38 @@ const wrapAsync = require("../utils/wrapAsync");
 const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 const listingController = require("../controllers/listings.js");
 const multer = require("multer");
-const { storage } = require("../cloudcofig.js");
+const { storage } = require("../cloudCofig.js");
 const upload = multer({ storage });
-const Listing = require("../public/models/listing.js"); //  make sure this line exists!
+const Listing = require("../public/models/listing.js");
 
-
-//  INDEX + CREATE
-
+// INDEX + CREATE
 router
   .route("/")
-.get(async (req, res, next) => {
-  try {
-    const allListings = await Listing.find({});
-    res.render("listings/index", { 
-      allListings, 
-      listings: allListings, 
-      country: null,
-      currentUser: req.user || null
-    });
-  } catch (err) {
-    next(err); // Express error handler ko bhej de
-  }
-})
-.post(
-  isLoggedIn,
-  upload.single("listing[image]"),
-  (req, res, next) => {
-    console.log(req.body); // 👈 Add this line
-    next();
-  },
-  validateListing,
-  wrapAsync(listingController.createListing)
-);
+  .get(
+    wrapAsync(async (req, res) => {
+      const allListings = await Listing.find({});
+      res.render("listings/index", {
+        allListings,
+        listings: allListings,
+        country: null,
+        currentUser: req.user || null,
+      });
+    })
+  )
+  .post(
+    isLoggedIn,
+    upload.single("listing[image]"),
+    validateListing,
+    wrapAsync(listingController.createListing)
+  );
 
-
-
-//  NEW LISTING FORM (must come before /:id)
-
+// NEW FORM
 router.get("/new", isLoggedIn, listingController.renderNewForm);
 
+// EDIT FORM
+router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.editListing));
 
-//  EDIT ROUTE
-
- router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.editListing));
-
-
-//  SEARCH BY COUNTRY
+// SEARCH BY COUNTRY
 router.get(
   "/search",
   wrapAsync(async (req, res) => {
@@ -59,30 +45,24 @@ router.get(
     if (country && country.trim() !== "") {
       listings = await Listing.find({ country: { $regex: new RegExp(country, "i") } });
 
-      //  If no listings found
       if (listings.length === 0) {
         req.flash("error", `No listings found for "${country}".`);
         return res.redirect("/listings");
       }
     } else {
-      //  If no country entered, redirect with message
       req.flash("error", "Please enter a country name to search.");
       return res.redirect("/listings");
     }
 
-    //  Pass both `listings` and `allListings`
     res.render("listings/index", { listings, allListings: listings, country });
   })
 );
 
-
-//  FILTER BY CATEGORY
+// FILTER BY CATEGORY
 router.get(
   "/category/:category",
   wrapAsync(async (req, res) => {
     const { category } = req.params;
-
-    // Find all listings that match the clicked category
     const listings = await Listing.find({ category });
 
     if (listings.length === 0) {
@@ -90,7 +70,6 @@ router.get(
       return res.redirect("/listings");
     }
 
-    // Pass category to EJS so heading shows
     res.render("listings/index", {
       listings,
       allListings: listings,
@@ -100,39 +79,67 @@ router.get(
   })
 );
 
-
-
-//  SHOW / UPDATE / DELETE ROUTES
-
+// SHOW, UPDATE, DELETE
 router
   .route("/:id")
   .get(wrapAsync(listingController.showListing))
-
-  
-  .delete(isLoggedIn, isOwner, wrapAsync(listingController.deleteListing));
-
-
-
-  //update route
-  router.put(
-  "/:id",
+  .put(
   isLoggedIn,
   isOwner,
   upload.single("listing[image]"),
   validateListing,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+
+    // 1. Fetch listing
+    const listing = await Listing.findById(id);
+    if (!listing) {
+      req.flash("error", "Listing not found!");
+      return res.redirect("/listings");
+    }
+
+    // 2. Check form data exists
+    if (!req.body.listing) {
+      req.flash("error", "Form data missing!");
+      return res.redirect(`/listings/${id}/edit`);
+    }
+
+    // 3. Update fields
+    const { title, price, description, location, country, category } = req.body.listing;
+    listing.title = title;
+    listing.price = price;
+    listing.description = description;
+    listing.location = location;
+    listing.country = country;
+    listing.category = category;
+
+    // 4. Update image if uploaded
     if (req.file) {
       listing.image = { url: req.file.path, filename: req.file.filename };
-      await listing.save();
     }
+
+    // 5. Save listing
+    await listing.save();
+
     req.flash("success", "✅ Listing updated successfully!");
     res.redirect(`/listings/${listing._id}`);
   })
-);
+)
+.delete(
+    isLoggedIn,
+    isOwner,
+    wrapAsync(async (req, res) => {
+      const { id } = req.params;
+      const deletedListing = await Listing.findByIdAndDelete(id);
 
+      if (!deletedListing) {
+        req.flash("error", "Listing not found!");
+        return res.redirect("/listings");
+      }
+
+      req.flash("success", "🗑️ Listing deleted successfully!");
+      res.redirect("/listings");
+    })
+  );
 
 module.exports = router;
-
-

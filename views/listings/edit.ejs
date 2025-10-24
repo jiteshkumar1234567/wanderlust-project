@@ -1,147 +1,107 @@
 <% layout("/layouts/boilerplate") %>
 
- <div class="row mt-3">
-      <div class="col-8 offset-2">
+<div class="row mt-3">
+  <div class="col-8 offset-2">
     <h3>Edit your Listing</h3>
     <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
+      
+      <!-- Title -->
       <div class="mg-3">
         <label for="title" class="form-label">Title</label>
-         <input name="listing[title]" id="validationCustom01" value="<%= listing.title %>" type="text" class="form-control" required/>
-
-           <div class="invalid-feedback">
-        Please Enter Title.
+        <input name="listing[title]" id="validationCustom01" value="<%= listing.title %>" type="text" class="form-control" required/>
+        <div class="invalid-feedback">Please Enter Title.</div>
+        <div class="valid-feedback">Looks good!</div>
       </div>
- <div class="valid-feedback">
-      Looks good!
-    </div>
-
-      </div>
-     
       
+      <!-- Description -->
       <div class="mg-3">
-          <label for="description" class="form-label">Description</label>
-      <textarea name="listing[description]" class="form-control">
-<%= listing.description %> required</textarea>
-
-    <div class="invalid-feedback">
-        Please Enter Description.
+        <label for="description" class="form-label">Description</label>
+        <textarea name="listing[description]" class="form-control" required><%= listing.description %></textarea>
+        <div class="invalid-feedback">Please Enter Description.</div>
+        <div class="valid-feedback">Looks good!</div>
       </div>
- <div class="valid-feedback">
-      Looks good!
-    </div>
-    </div>
 
-    <h5>Original Image</h5>
-<div class="mg-2">
-  <img src="<%= orignalImageUrl %>" alt="" class="listing-img">
-</div>
+      <!-- Original Image -->
+      <h5>Original Image</h5>
+      <div class="mg-2">
+        <img src="<%= orignalImageUrl %>" alt="" class="listing-img">
+      </div>
 
-<style>
-  .listing-img {
-    width: 100%;
-    max-width: 400px;   
-    height: auto;      
-    border-radius: 10px; 
-    box-shadow: 0 0 10px rgba(0,0,0,0.2); 
-    margin-top: 10px;
-  }
+      <style>
+        .listing-img {
+          width: 100%;
+          max-width: 400px;   
+          height: auto;      
+          border-radius: 10px; 
+          box-shadow: 0 0 10px rgba(0,0,0,0.2); 
+          margin-top: 10px;
+        }
+        .mg-2 { text-align: center; }
+      </style>
 
-  .mg-2 {
-    text-align: center; 
-  }
-</style>
-
-<br>
-
+      <!-- Upload New Image -->
       <div class="mg-3">
-         <label for="image" class="form-label">Upload New Image  (Min: 50MB)</label>
-      <input name="listing[image]" type="file" class="form-control"/>
-    </div>
-     
-    <div class="row">
-      <div class="mg-3 col-md-4">
-        <label for="price" class="form-label">Price</label>
-        <input name="listing[price]" value="<%= listing.price %>" type="" class="form-control" required/>
-
-              <div class="invalid-feedback">
-        Please Enter Price.
+        <label for="image" class="form-label">Upload New Image (Min: 50MB)</label>
+        <input name="listing[image]" type="file" class="form-control"/>
       </div>
- <div class="valid-feedback">
-      Looks good!
-    </div>
 
+      <div class="row">
+        <!-- Price -->
+        <div class="mg-3 col-md-4">
+          <label for="price" class="form-label">Price</label>
+          <input name="listing[price]" value="<%= listing.price %>" type="number" class="form-control" required/>
+          <div class="invalid-feedback">Please Enter Price.</div>
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+
+        <!-- Country -->
+        <div class="mg-3 col-md-8">
+          <label for="country" class="form-label">Country</label>
+          <input name="listing[country]" value="<%= listing.country %>" type="text" class="form-control" required/>
+          <div class="invalid-feedback">Please Enter Country.</div>
+          <div class="valid-feedback">Looks good!</div>
+        </div>
       </div>
-      
-  
-      <div class="mg-3 col-md-8">
-         <label for="country" class="form-label">Country</label>
-        <input
-        name="listing[country]"
-        value="<%= listing.country %>"
-        type="text" class="form-control" required/>
 
-                <div class="invalid-feedback">
-        Please Enter Country.
-      </div>
- <div class="valid-feedback">
-      Looks good!
-    </div>
-
-      </div></div>
-      
+      <!-- Category -->
       <div class="mg-3 mt-1">
-        <label class="mb-2" for="">Category</label>
-      <select name="listing[category]" class="form-select" required>
-  <option value="">Category</option>
-  <option value="Trending" <%= listing.category === 'Trending' ? 'selected' : '' %>>Trending</option>
-  <option value="Rooms" <%= listing.category === 'Rooms' ? 'selected' : '' %>>Rooms</option>
-  <option value="Cities" <%= listing.category === 'Cities' ? 'selected' : '' %>>Cities</option>
-  <option value="Mountain" <%= listing.category === 'Mountain' ? 'selected' : '' %>>Mountain</option>
-  <option value="Castles" <%= listing.category === 'Castles' ? 'selected' : '' %>>Castles</option>
-  <option value="Pools" <%= listing.category === 'Pools' ? 'Pools' : '' %>>Pools</option>
-  <option value="Lakes" <%= listing.category === 'Lakes' ? 'selected' : '' %>>Lakes</option>
-   <option value="Beach" <%= listing.category === 'Beach' ? 'selected' : '' %>>Beach</option>
-  <option value="Camping" <%= listing.category === 'Camping' ? 'selected' : '' %>>Camping</option>
-   <option value="Domes" <%= listing.category === 'Domes' ? 'selected' : '' %>>Domes</option>
-   <option value="Arictic" <%= listing.category === 'Arictic' ? 'selected' : '' %>>Arictic</option>
-   <option value="Boats" <%= listing.category === 'Boats' ? 'selected' : '' %>>Boats</option>
-</select>
-</div>
+        <label class="mb-2">Category</label>
+        <select name="listing[category]" class="form-select" required>
+          <option value="">Category</option>
+          <option value="Trending" <%= listing.category === 'Trending' ? 'selected' : '' %>>Trending</option>
+          <option value="Rooms" <%= listing.category === 'Rooms' ? 'selected' : '' %>>Rooms</option>
+          <option value="Cities" <%= listing.category === 'Cities' ? 'selected' : '' %>>Cities</option>
+          <option value="Mountain" <%= listing.category === 'Mountain' ? 'selected' : '' %>>Mountain</option>
+          <option value="Castles" <%= listing.category === 'Castles' ? 'selected' : '' %>>Castles</option>
+          <option value="Pools" <%= listing.category === 'Pools' ? 'selected' : '' %>>Pools</option>
+          <option value="Lakes" <%= listing.category === 'Lakes' ? 'selected' : '' %>>Lakes</option>
+          <option value="Beach" <%= listing.category === 'Beach' ? 'selected' : '' %>>Beach</option>
+          <option value="Camping" <%= listing.category === 'Camping' ? 'selected' : '' %>>Camping</option>
+          <option value="Domes" <%= listing.category === 'Domes' ? 'selected' : '' %>>Domes</option>
+          <option value="Arictic" <%= listing.category === 'Arictic' ? 'selected' : '' %>>Arictic</option>
+          <option value="Boats" <%= listing.category === 'Boats' ? 'selected' : '' %>>Boats</option>
+        </select>
+      </div>
 
-     
+      <!-- Location -->
       <div class="mg-3">
-         <label for="location" class="form-label">Location</label>
-         <input
-        name="listing[location]"
-        value="<%= listing.location %>"
-        type="text" class="form-control" required/>
-
-                <div class="invalid-feedback">
-        Please Enter Location.
+        <label for="location" class="form-label">Location</label>
+        <input name="listing[location]" value="<%= listing.location %>" type="text" class="form-control" required/>
+        <div class="invalid-feedback">Please Enter Location.</div>
+        <div class="valid-feedback">Looks good!</div>
       </div>
- <div class="valid-feedback">
-      Looks good!
-    </div>
 
+      <!-- Terms -->
+      <div class="col-12 mt-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+          <label class="form-check-label" for="invalidCheck">Agree to terms and conditions</label>
+          <div class="invalid-feedback">You must agree before submitting.</div>
+        </div>
       </div>
-     
-       <div class="col-12 mt-3">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-      <label class="form-check-label" for="invalidCheck">
-        Agree to terms and conditions
-      </label>
-      <div class="invalid-feedback">
-        You must agree before submitting.
-      </div>
-    </div>
-  </div>
 
-      <button class="btn btn-dark  Edit mt-3 mb-3">Edit</button>
-     
+      <!-- Submit -->
+      <button class="btn btn-dark Edit mt-3 mb-3">Edit</button>
     </form>
-    </div>
-    </div>
-   
-  </body>
-</html>
+  </div>
+</div>
