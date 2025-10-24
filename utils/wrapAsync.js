@@ -1,5 +1,6 @@
-module.exports = (fn) =>{
-    return (req,res,next) =>{
-        fn(req,res,next).catch(next);
-    }
-}
+// utils/wrapAsync.js
+module.exports = func => {
+  return (req, res, next) => {
+    Promise.resolve(func(req, res, next)).catch(next);
+  };
+};

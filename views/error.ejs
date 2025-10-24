@@ -4,7 +4,9 @@
   <div class="alert alert-danger col-8 mt-4 offset-2" role="alert">
       
   <div>
-<h4 class="alert-heading"><%= message || 'An error occurred' %></h4>
+<h4 class="alert-heading"><%= typeof message !== 'undefined' ? message : 'An error occurred' %></h4>
+<p>Status: <%= status %></p>
+
 </div>  
 </div>
 </div>
