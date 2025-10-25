@@ -40,20 +40,34 @@ module.exports.createListing = async (req, res, next) => {
     res.redirect("/listings");
 }
 
-module.exports.renderEditForm = async (req, res) => {
-  const { id } = req.params;
-  const listing = await Listing.findById(id);
 
-  if (!listing) {
-    req.flash("error", "Listing not found!");
-    return res.redirect("/listings");
+module.exports.editListing = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // 🔹 Debug logs
+    console.log("Edit route hit. Listing ID:", id);
+
+    const listing = await Listing.findById(id);
+    console.log("Listing found:", listing);
+
+    if (!listing) {
+      req.flash("error", "Listing not found!");
+      return res.redirect("/listings");
+    }
+
+    // 🔹 Null-safe original image (must include this!)
+    const orignalImageUrl = listing.image?.url || "/images/default.jpg";
+
+    // Render edit page
+    res.render("listings/edit", { listing, orignalImageUrl });
+  } catch (err) {
+    console.error("Error in editListing controller:", err);
+    req.flash("error", "Something went wrong while loading the edit page.");
+    res.redirect("/listings");
   }
-
-  // Pass original image URL to ejs
-  const orignalImageUrl = listing.image ? listing.image.url : null;
-
-  res.render("listings/edit", { listing, orignalImageUrl });
 };
+
 
 
 module.exports.updateListing = async (req, res) => {
