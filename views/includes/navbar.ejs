@@ -1,59 +1,77 @@
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/listings"><i class="fa-solid fa-compass"></i></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- Logo / Brand -->
+    <a class="navbar-brand" href="/listings">
+      <i class="fa-solid fa-compass"></i>
+    </a>
+
+    <!-- Hamburger button for mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" href="/listings">Explore</a>
-      </div>
- 
 
-  <!-- 🌍 Country Search Bar -->
-   <div class="navbar-nav ms-auto">
- <form action="/listings/search" method="GET" class="d-flex align-items-center">
-  <input type="text" name="country" class="form-control me-2"
-       style="border-radius: 50px; border: 2px solid black;"
-       placeholder="Search by country..."
-       value="<%= typeof country !== 'undefined' ? country : '' %>">
-    <button class="btn btn-outline-dark me-2" style="background-color:  #fe424d; color: white; border-radius: 50px;"><i>Search</i></button>
-    <a href="/listings" class="btn btn-outline-secondary" style="border-radius: 50px;"><i>Reset</i></a>
-  </form>
-</div> 
-
-
-
-<div class="navbar-nav ms-auto me-3 auth-buttons">
-
-   <a class="nav-link" href="/listings/new">Airbnb your home</a>
-
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="collapse navbar-collapse">
-    <ul class="navbar-nav ms-auto">
-      <% if (currUser) { %>
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      
+      <!-- Left side nav -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-center">
         <li class="nav-item">
-          <b><span class="nav-link" style="opacity: 0.7;">Hello, <%= currUser.username %>!</span></b>
+          <a class="nav-link" href="/listings">Explore</a>
         </li>
-        </style>
         <li class="nav-item">
-          <form action="/logout" method="POST">
-           <b><button class="btn btn-link nav-link" style="opacity: 0.7;" type="submit">Logout</button></b> 
-          </form>
+          <a class="nav-link" href="/listings/new">Airbnb your home</a>
         </li>
-      <% } else { %>
-         <b> <li class="nav-item"><a class="nav-link" style="opacity: 0.7;" href="/signup">Sign Up</a></li></b>
-       <b> <li class="nav-item"><a class="nav-link" style="opacity: 0.7;" href="/login">Login</a></li></b>
-      <% } %>
-    </ul>
-  </div>
-</nav>
+      </ul>
 
+      <!-- Center / Country search -->
+      <form action="/listings/search" method="GET" class="d-flex mx-auto my-2 my-lg-0">
+        <input type="text" name="country" class="form-control me-2" placeholder="Search by country..." 
+          style="border-radius: 50px; border: 2px solid black; min-width: 200px;"
+          value="<%= typeof country !== 'undefined' ? country : '' %>">
+        <button class="btn btn-danger me-2" style="border-radius: 50px;">Search</button>
+        <a href="/listings" class="btn btn-secondary" style="border-radius: 50px;">Reset</a>
+      </form>
 
-
-</div>
+      <!-- Right side auth buttons -->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-center">
+        <% if (currUser) { %>
+          <li class="nav-item">
+            <span class="nav-link" style="opacity: 0.7;">Hello, <%= currUser.username %>!</span>
+          </li>
+          <li class="nav-item">
+            <form action="/logout" method="POST">
+              <button class="btn btn-link nav-link" style="opacity: 0.7;" type="submit">Logout</button>
+            </form>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/signup" style="opacity: 0.7;">Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/login" style="opacity: 0.7;">Login</a>
+          </li>
+        <% } %>
+      </ul>
     </div>
   </div>
 </nav>
 
+<style>
+/* Mobile: center auth buttons in collapse menu */
+@media (max-width: 991.98px) {
+  #navbarResponsive .navbar-nav.ms-auto,
+  #navbarResponsive .navbar-nav.me-auto {
+    text-align: center;
+    width: 100%;
+  }
+
+  #navbarResponsive .navbar-nav.ms-auto .nav-item,
+  #navbarResponsive .navbar-nav.me-auto .nav-item {
+    margin-bottom: 0.5rem;
+  }
+
+  #navbarResponsive .navbar-nav.ms-auto form {
+    display: inline-block;
+  }
+}
+</style>
