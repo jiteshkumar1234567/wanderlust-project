@@ -18,15 +18,16 @@ const LocalStrategy = require("passport-local");
 const ExpressError = require("./utils/ExpressError.js");
 const User = require("./public/models/user.js");
 
+
 // -------------------- Routes --------------------
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
+
 // -------------------- MongoDB Connection --------------------
 const dbUrl = process.env.MONGO_URL; 
 // fallback for local testing
-// Function to connect to MongoDB
 async function connectWithRetry() {
   try {
     await mongoose.connect(dbUrl, {
@@ -106,6 +107,8 @@ app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
+
+
 // -------------------- Error Handling --------------------
 app.all("", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found!"));
@@ -124,6 +127,9 @@ app.use((err, req, res, next) => {
     const message = err.message || 'Something went wrong';
     res.status(status).render('error', { message, status });
 });
+
+
+
 
 
 // -------------------- Start Server --------------------
