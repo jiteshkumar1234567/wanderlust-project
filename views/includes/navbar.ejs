@@ -1,4 +1,8 @@
-<% const currentPath = typeof path !== "undefined" ? path : ""; %>
+<%
+  const currentPath = typeof path === "string" ? path : "";
+  const username = currUser && typeof currUser.username === "string" && currUser.username.trim() ? currUser.username.trim() : "User";
+  const avatarInitial = username.charAt(0).toUpperCase() || "U";
+%>
 <nav class="site-nav navbar navbar-expand-xl" aria-label="Primary navigation">
   <div class="site-shell nav-shell">
     <a class="brand" href="/listings" aria-label="Wanderlust home">
@@ -9,24 +13,24 @@
       <span></span><span></span><span></span>
     </button>
     <div class="collapse navbar-collapse" id="mainNavigation">
-      <ul class="navbar-nav nav-center mx-auto">
-        <li><a class="nav-anchor <%= currentPath === '/listings' ? 'active' : '' %>" href="/listings">Explore</a></li>
-        <li><a class="nav-anchor" href="/listings/category/Rooms">Stays</a></li>
-        <li><a class="nav-anchor" href="/listings/category/Cities">Destinations</a></li>
-        <li><a class="nav-anchor" href="/listings/category/Trending">Discover</a></li>
+      <ul class="navbar-nav nav-center mx-xl-auto">
+        <li class="nav-item"><a class="nav-anchor <%= currentPath === '/listings' ? 'active' : '' %>" <% if (currentPath === '/listings') { %>aria-current="page"<% } %> href="/listings">Explore</a></li>
+        <li class="nav-item"><a class="nav-anchor <%= currentPath === '/listings/category/Rooms' ? 'active' : '' %>" <% if (currentPath === '/listings/category/Rooms') { %>aria-current="page"<% } %> href="/listings/category/Rooms">Stays</a></li>
+        <li class="nav-item"><a class="nav-anchor <%= currentPath === '/listings/category/Cities' ? 'active' : '' %>" <% if (currentPath === '/listings/category/Cities') { %>aria-current="page"<% } %> href="/listings/category/Cities">Destinations</a></li>
+        <li class="nav-item"><a class="nav-anchor <%= currentPath === '/listings/category/Trending' ? 'active' : '' %>" <% if (currentPath === '/listings/category/Trending') { %>aria-current="page"<% } %> href="/listings/category/Trending">Discover</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="nav-search-trigger" type="button" data-focus-search aria-label="Open destination search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button class="nav-search-trigger" type="button" data-focus-search aria-label="Open destination search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><span>Search</span></button>
         <% if (currUser) { %>
           <a class="nav-bookings" href="/bookings">My bookings</a>
           <a class="button button-small button-ghost host-action" href="/listings/new">List your place</a>
           <div class="dropdown">
-            <button class="profile-trigger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <span class="profile-avatar"><%= currUser.username.charAt(0).toUpperCase() %></span>
-              <span class="profile-name"><%= currUser.username %></span>
+            <button class="profile-trigger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open account menu for <%= username %>">
+              <span class="profile-avatar"><%= avatarInitial %></span>
+              <span class="profile-name"><%= username %></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end profile-menu">
-              <li class="profile-menu-head"><span>Signed in as</span><strong><%= currUser.username %></strong></li>
+              <li class="profile-menu-head"><span>Signed in as</span><strong><%= username %></strong></li>
               <li><a class="dropdown-item" href="/bookings"><i class="fa-regular fa-calendar-check"></i> My bookings</a></li>
               <li><a class="dropdown-item" href="/listings/mine"><i class="fa-regular fa-building"></i> My listings</a></li>
               <li><a class="dropdown-item" href="/host/bookings"><i class="fa-solid fa-chart-line"></i> Guest reservations</a></li>
