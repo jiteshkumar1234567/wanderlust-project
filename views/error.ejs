@@ -1,0 +1,3 @@
+<% layout("/layouts/boilerplate") %>
+<% const isNotFound = Number(status) === 404; %>
+<section class="error-page"><div class="error-visual"><span><%= isNotFound ? '404' : status %></span><i class="fa-solid <%= isNotFound ? 'fa-signs-post' : 'fa-cloud-bolt' %>"></i></div><span class="eyebrow"><%= isNotFound ? 'Route not found' : 'Something went wrong' %></span><h1><%= isNotFound ? 'This journey took a wrong turn.' : 'We hit unexpected weather.' %></h1><p><%= isNotFound ? 'The page you were looking for may have moved, or the path was never mapped.' : message %></p><div><a href="/listings" class="button button-primary">Explore stays</a><button type="button" class="button button-ghost" onclick="history.back()">Go back</button></div></section>

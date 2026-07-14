@@ -1,0 +1,45 @@
+<% const currentPath = typeof path !== "undefined" ? path : ""; %>
+<nav class="site-nav navbar navbar-expand-xl" aria-label="Primary navigation">
+  <div class="site-shell nav-shell">
+    <a class="brand" href="/listings" aria-label="Wanderlust home">
+      <span class="brand-mark"><i class="fa-solid fa-location-arrow"></i></span>
+      <span>Wanderlust</span>
+    </a>
+    <button class="navbar-toggler nav-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavigation" aria-controls="mainNavigation" aria-expanded="false" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNavigation">
+      <ul class="navbar-nav nav-center mx-auto">
+        <li><a class="nav-anchor <%= currentPath === '/listings' ? 'active' : '' %>" href="/listings">Explore</a></li>
+        <li><a class="nav-anchor" href="/listings/category/Rooms">Stays</a></li>
+        <li><a class="nav-anchor" href="/listings/category/Cities">Destinations</a></li>
+        <li><a class="nav-anchor" href="/listings/category/Trending">Discover</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-search-trigger" type="button" data-focus-search aria-label="Open destination search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <% if (currUser) { %>
+          <a class="nav-bookings" href="/bookings">My bookings</a>
+          <a class="button button-small button-ghost host-action" href="/listings/new">List your place</a>
+          <div class="dropdown">
+            <button class="profile-trigger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="profile-avatar"><%= currUser.username.charAt(0).toUpperCase() %></span>
+              <span class="profile-name"><%= currUser.username %></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end profile-menu">
+              <li class="profile-menu-head"><span>Signed in as</span><strong><%= currUser.username %></strong></li>
+              <li><a class="dropdown-item" href="/bookings"><i class="fa-regular fa-calendar-check"></i> My bookings</a></li>
+              <li><a class="dropdown-item" href="/listings/mine"><i class="fa-regular fa-building"></i> My listings</a></li>
+              <li><a class="dropdown-item" href="/host/bookings"><i class="fa-solid fa-chart-line"></i> Guest reservations</a></li>
+              <li><a class="dropdown-item" href="/listings/new"><i class="fa-solid fa-plus"></i> Add new listing</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><form action="/logout" method="POST"><button class="dropdown-item logout-item" type="submit"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</button></form></li>
+            </ul>
+          </div>
+        <% } else { %>
+          <a class="nav-bookings" href="/login">Log in</a>
+          <a class="button button-small button-primary" href="/signup">Create account</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>

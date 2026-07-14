@@ -1,0 +1,11 @@
+<% layout("/layouts/boilerplate") %>
+<section class="auth-page"><div class="auth-split">
+  <div class="auth-visual auth-login"><div><a class="brand brand-light" href="/listings"><span class="brand-mark"><i class="fa-solid fa-location-arrow"></i></span>Wanderlust</a><blockquote>“The best journeys begin with a place that feels chosen, not found.”</blockquote><p>Return to your saved itineraries, secure bookings and hosted stays.</p></div></div>
+  <div class="auth-panel"><div class="auth-form-wrap"><span class="eyebrow">Welcome back</span><h1>Continue your journey.</h1><p>Sign in to manage bookings, reviews and properties.</p>
+    <form action="/login" method="POST" class="premium-form needs-validation" novalidate>
+      <label class="form-label" for="login-username">Username</label><input name="username" type="text" id="login-username" class="form-control" placeholder="Your username" autocomplete="username" required><div class="invalid-feedback">Enter your username.</div>
+      <label class="form-label mt-3" for="login-password">Password</label><div class="password-field"><input name="password" type="password" id="login-password" class="form-control" placeholder="Your password" autocomplete="current-password" required><button type="button" data-password-toggle aria-label="Show password"><i class="fa-regular fa-eye"></i></button></div><div class="invalid-feedback">Enter your password.</div>
+      <button type="submit" class="button button-primary w-100 mt-4">Sign in <i class="fa-solid fa-arrow-right"></i></button>
+    </form><p class="auth-switch">New to Wanderlust? <a href="/signup">Create an account</a></p>
+  </div></div>
+</div></section>

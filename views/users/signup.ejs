@@ -1,0 +1,12 @@
+<% layout("/layouts/boilerplate") %>
+<section class="auth-page"><div class="auth-split">
+  <div class="auth-visual auth-signup"><div><a class="brand brand-light" href="/listings"><span class="brand-mark"><i class="fa-solid fa-location-arrow"></i></span>Wanderlust</a><blockquote>Stay somewhere with a story.</blockquote><p>Create an account to reserve thoughtfully hosted places and share your own.</p></div></div>
+  <div class="auth-panel"><div class="auth-form-wrap"><span class="eyebrow">Join Wanderlust</span><h1>Your next chapter starts here.</h1><p>One account for trips, hosting and trusted guest reviews.</p>
+    <form action="/signup" method="POST" class="premium-form needs-validation" novalidate>
+      <label class="form-label" for="signup-username">Username</label><input name="username" type="text" id="signup-username" class="form-control" placeholder="Choose a username" autocomplete="username" required><div class="invalid-feedback">Choose a username.</div>
+      <label class="form-label mt-3" for="signup-email">Email address</label><input name="email" type="email" id="signup-email" class="form-control" placeholder="you@example.com" autocomplete="email" required><div class="invalid-feedback">Enter a valid email address.</div>
+      <label class="form-label mt-3" for="signup-password">Password</label><div class="password-field"><input name="password" type="password" id="signup-password" class="form-control" placeholder="At least 8 characters" minlength="8" autocomplete="new-password" required><button type="button" data-password-toggle aria-label="Show password"><i class="fa-regular fa-eye"></i></button></div><div class="invalid-feedback">Use at least 8 characters.</div>
+      <button type="submit" class="button button-primary w-100 mt-4">Create account <i class="fa-solid fa-arrow-right"></i></button>
+    </form><p class="auth-switch">Already have an account? <a href="/login">Sign in</a></p>
+  </div></div>
+</div></section>

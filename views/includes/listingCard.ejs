@@ -1,0 +1,12 @@
+<% const reviewList = listing.reviews || []; const avgRating = reviewList.length ? reviewList.reduce((sum, review) => sum + Number(review.rating || 0), 0) / reviewList.length : null; %>
+<article class="stay-card">
+  <a class="stay-image-wrap" href="/listings/<%= listing._id %>" aria-label="View <%= listing.title %>">
+    <img src="<%= listing.image?.url %>" alt="<%= listing.title %> in <%= listing.location %>" loading="lazy">
+    <% if (listing.category) { %><span class="stay-tag"><%= listing.category === 'Arictic' ? 'Arctic' : listing.category %></span><% } %>
+  </a>
+  <div class="stay-card-body">
+    <div class="stay-meta"><span><i class="fa-solid fa-location-dot"></i> <%= listing.location %>, <%= listing.country %></span><% if (avgRating) { %><span class="stay-rating"><i class="fa-solid fa-star"></i> <%= avgRating.toFixed(1) %></span><% } %></div>
+    <h3><a href="/listings/<%= listing._id %>"><%= listing.title %></a></h3>
+    <div class="stay-price"><strong>₹<%= Number(listing.price).toLocaleString("en-IN") %></strong><span> / night</span><a href="/listings/<%= listing._id %>" aria-label="View details"><i class="fa-solid fa-arrow-right"></i></a></div>
+  </div>
+</article>

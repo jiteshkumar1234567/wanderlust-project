@@ -1,0 +1,6 @@
+<div class="empty-state">
+  <span class="empty-icon"><i class="fa-solid <%= typeof icon !== 'undefined' ? icon : 'fa-compass' %>"></i></span>
+  <h3><%= heading %></h3>
+  <p><%= message %></p>
+  <% if (typeof href !== "undefined" && href) { %><a class="button button-dark" href="<%= href %>"><%= cta %></a><% } %>
+</div>

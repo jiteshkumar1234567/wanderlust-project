@@ -1,0 +1,59 @@
+<% layout("/layouts/boilerplate") %>
+<% const heroListing = allListings[0]; const uniqueDestinations = []; allListings.forEach(item => { if (!uniqueDestinations.some(place => place.location === item.location)) uniqueDestinations.push(item); }); const collections = ['Beach','Mountain','Cities','Camping'].map(categoryName => allListings.find(item => item.category === categoryName)).filter(Boolean); %>
+
+<section class="home-hero">
+  <% if (heroListing?.image?.url) { %><img class="hero-backdrop" src="<%= heroListing.image.url %>" alt="" aria-hidden="true"><% } %>
+  <div class="hero-overlay"></div>
+  <div class="site-shell hero-content">
+    <span class="hero-kicker">Travel, thoughtfully discovered</span>
+    <h1>Places that become part of your story.</h1>
+    <p>Explore distinctive stays, welcoming hosts and destinations chosen for more memorable journeys.</p>
+    <form class="journey-search" action="/listings/search" method="GET" aria-label="Search available stays">
+      <label><span>Destination</span><span class="search-field"><i class="fa-solid fa-location-dot"></i><input data-main-search name="country" value="<%= country || '' %>" placeholder="Where would you like to go?" required></span></label>
+      <label><span>Check in</span><input type="date" name="checkIn" value="<%= typeof searchDates !== 'undefined' ? searchDates.checkIn || '' : '' %>"></label>
+      <label><span>Check out</span><input type="date" name="checkOut" value="<%= typeof searchDates !== 'undefined' ? searchDates.checkOut || '' : '' %>"></label>
+      <label><span>Travelers</span><input type="number" name="guests" min="1" value="<%= typeof searchDates !== 'undefined' ? searchDates.guests || 1 : 1 %>" aria-label="Number of travelers"></label>
+      <button type="submit"><i class="fa-solid fa-magnifying-glass"></i><span>Find a stay</span></button>
+    </form>
+  </div>
+</section>
+
+<section class="section destination-section">
+  <div class="site-shell">
+    <div class="section-heading"><div><span class="eyebrow">Where next</span><h2>Destinations with a point of view</h2></div><p>From vibrant city corners to quiet natural escapes, begin with a place that feels right.</p></div>
+    <% if (uniqueDestinations.length) { %><div class="destination-grid">
+      <% uniqueDestinations.slice(0,5).forEach((place,index) => { const count = allListings.filter(item => item.location === place.location).length; %>
+        <a href="/listings/search?country=<%= encodeURIComponent(place.country) %>" class="destination-card destination-<%= index + 1 %>"><img src="<%= place.image?.url %>" alt="Explore stays in <%= place.location %>" loading="lazy"><span class="destination-shade"></span><span class="destination-copy"><small><%= count %> <%= count === 1 ? 'stay' : 'stays' %></small><strong><%= place.location %></strong><em><%= place.country %></em></span></a>
+      <% }) %>
+    </div><% } else { %><%- include("../includes/emptyState", { heading: "The map is waiting", message: "No destinations have been added yet. Be the first host to share a remarkable place.", href: currUser ? "/listings/new" : "/signup", cta: "List a property", icon: "fa-map-location-dot" }) %><% } %>
+  </div>
+</section>
+
+<section class="section section-soft" id="stays">
+  <div class="site-shell">
+    <div class="section-heading"><div><span class="eyebrow">Selected stays</span><h2>Find your kind of getaway</h2></div><p>Real homes from the Wanderlust community, with clear pricing and trusted guest feedback.</p></div>
+    <div class="filter-toolbar">
+      <div class="category-scroll" aria-label="Browse by category">
+        <% const categories=[['Trending','fa-fire'],['Rooms','fa-bed'],['Cities','fa-city'],['Mountain','fa-mountain-sun'],['Castles','fa-chess-rook'],['Pools','fa-person-swimming'],['Lakes','fa-water'],['Beach','fa-umbrella-beach'],['Camping','fa-campground'],['Domes','fa-igloo'],['Arictic','fa-snowflake'],['Boats','fa-sailboat']]; categories.forEach(item => { %><a class="category-chip <%= activeCategory === item[0] ? 'active' : '' %>" href="/listings/category/<%= item[0] %>"><i class="fa-solid <%= item[1] %>"></i><span><%= item[0] === 'Arictic' ? 'Arctic' : item[0] %></span></a><% }) %>
+      </div>
+      <form class="listing-controls" action="/listings" method="GET">
+        <input type="number" name="minPrice" value="<%= filters?.minPrice || '' %>" placeholder="Min ₹" min="0" aria-label="Minimum nightly price">
+        <input type="number" name="maxPrice" value="<%= filters?.maxPrice || '' %>" placeholder="Max ₹" min="0" aria-label="Maximum nightly price">
+        <select name="sort" aria-label="Sort stays"><option value="featured" <%= filters?.sort === 'featured' ? 'selected' : '' %>>Featured</option><option value="newest" <%= filters?.sort === 'newest' ? 'selected' : '' %>>Newest</option><option value="price-asc" <%= filters?.sort === 'price-asc' ? 'selected' : '' %>>Price: low to high</option><option value="price-desc" <%= filters?.sort === 'price-desc' ? 'selected' : '' %>>Price: high to low</option></select>
+        <button class="button button-dark button-small">Apply</button>
+      </form>
+    </div>
+    <% if (allListings.length) { %><div class="listing-grid"><% allListings.forEach(listing => { %><%- include("../includes/listingCard", { listing }) %><% }) %></div><% } else { %><%- include("../includes/emptyState", { heading: "No stays match this journey", message: "Try another destination, category, or price range.", href: "/listings", cta: "Clear filters", icon: "fa-route" }) %><% } %>
+  </div>
+</section>
+
+<section class="section trust-section"><div class="site-shell"><div class="section-heading"><div><span class="eyebrow">Travel confidently</span><h2>Simple choices. Safer journeys.</h2></div></div><div class="trust-grid">
+  <article><i class="fa-solid fa-house-circle-check"></i><h3>Host-owned stays</h3><p>Each property connects you directly with an accountable Wanderlust host.</p></article>
+  <article><i class="fa-solid fa-shield-halved"></i><h3>Protected payments</h3><p>Razorpay checkout and server-side verification keep confirmation secure.</p></article>
+  <article><i class="fa-regular fa-calendar-check"></i><h3>Clear availability</h3><p>Live date checks prevent overlapping reservations before confirmation.</p></article>
+  <article><i class="fa-regular fa-message"></i><h3>Guest perspectives</h3><p>Authenticated reviews help you arrive with a clearer picture.</p></article>
+</div></div></section>
+
+<% if (collections.length) { %><section class="section section-soft"><div class="site-shell"><div class="section-heading"><div><span class="eyebrow">Curated moods</span><h2>Choose the feeling first</h2></div></div><div class="collection-grid"><% collections.forEach(item => { %><a href="/listings/category/<%= item.category %>" class="collection-card"><img src="<%= item.image?.url %>" alt="<%= item.category %> collection"><span></span><div><small>Curated collection</small><h3><%= item.category %> escapes</h3><em>Explore collection <i class="fa-solid fa-arrow-right"></i></em></div></a><% }) %></div></div></section><% } %>
+
+<section class="section"><div class="site-shell host-banner"><div><span class="eyebrow">Open your doors</span><h2>Turn your space into someone’s next story.</h2><p>Share a place you care about and welcome travelers looking for something more personal.</p><a class="button button-light" href="/listings/new">List your property <i class="fa-solid fa-arrow-right"></i></a></div><i class="fa-solid fa-compass host-watermark"></i></div></section>
